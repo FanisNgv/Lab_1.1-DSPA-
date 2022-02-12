@@ -1,5 +1,5 @@
 ﻿#include <iostream>
-
+//comment
 struct Node
 {
     int data;
@@ -133,8 +133,6 @@ void showTop()
         std::cout << "The top is " << top->data;
     }
 }
-
-
 
 int main()
 {
