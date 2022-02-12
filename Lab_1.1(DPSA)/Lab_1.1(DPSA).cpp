@@ -1,5 +1,5 @@
 ﻿#include <iostream>
-//comment
+
 struct Node
 {
     int data;
@@ -36,7 +36,7 @@ bool isempty()
 void push(int value)
 {
     std::cout << "1-добавить новый элемент\n"
-        "2-добавить элемент из вспомогательного стека" << std::endl;
+    "2-добавить элемент из вспомогательного стека" << std::endl;
 
     while (true)
     {
@@ -122,29 +122,33 @@ void pop()
     }
 }
 
-void showTop()
+void show_stack()
 {
     if (isempty())
     {
-        std::cout << "Stack is already empty" << std::endl;
+        std::cout << "Stack is empty" << std::endl;
     }
     else
     {
-        std::cout << "The top is " << top->data;
+        Node* ptr = top;
+        do
+        {
+          std::cout <<  ptr->data << std::endl;
+          ptr = ptr->link;
+        } while (ptr != NULL);
+        
     }
 }
 
 int main()
 {
     setlocale(LC_ALL, "rus");
-
     push(19);
     push(20);
-    push(1001);
-    pop();
-    pop();
-    push(12);
-    
+    push(1001);    
+    show_stack();
+    push(11);
+    show_stack();
 
     return 0;
 }
