@@ -2,17 +2,17 @@
 
 struct Node
 {
-    int data;
-    Node* link;
+    int data; // элемент стека
+    Node* link; // ссылка на элемент ниже ( если рассматриваем стек, как магазин автомата)
 };
 
-Node* top = NULL;
-Node* additionallyTop = NULL;
-char choice;
+Node* top = NULL; // адрес ключевого элемента стека - вершины
+Node* additionallyTop = NULL; // адрес ключевого элемента вспомогательного стека
+char choice; // выбор пользователя
 
 bool addIsempty()
 {
-    if (additionallyTop == NULL)
+    if (additionallyTop == NULL) //если адрес вершины вспомогательного стека пока NULL
     {
         return true;
     }
@@ -23,7 +23,7 @@ bool addIsempty()
 }
 bool isempty()
 {
-    if (top == NULL)
+    if (top == NULL) // если адрес вершины стека пока NULL
     {
         return true;
     }
@@ -48,10 +48,10 @@ void push(int value)
         }
         if (choice == '1')
         {
-            Node* ptr = new Node;
-            ptr->data = value;
-            ptr->link = top;
-            top = ptr;
+            Node* ptr = new Node; // создаем указатель на элемент стека (пока несуществующего)
+            ptr->data = value; // данные элемента, на который указывает ptr
+            ptr->link = top; // он содежит адрес предыдущей вершины
+            top = ptr; // добавляем элемент в стек, теперь он вершина
             break;
         }
         else if (choice == '2')
@@ -63,10 +63,10 @@ void push(int value)
             }
             else
             {
-                Node* ptr = additionallyTop;
-                additionallyTop = additionallyTop->link;
-                ptr->link = top;
-                top = ptr;                
+                Node* ptr = additionallyTop; // создаем новый пойнтер, который равен вершине вспомогательного стека
+                additionallyTop = additionallyTop->link; // убираем вершину из вспомогательного
+                ptr->link = top; // теперь этот изъятый элемент ссылается на вершину нашего стека
+                top = ptr; // теперь он тут батя
                 break;
             }
 
@@ -100,15 +100,15 @@ void pop()
             if (choice == '1')
             {
                 Node* ptr = top;
-                top = top->link;
-                delete(ptr);
+                top = top->link; // вершина теперь элемент, который был под предыдущей вершиной
+                delete(ptr); // удаляем предыдущую вершину
                 break;
             }
             else if (choice == '2')
             {
-                Node* ptr = top;
-                top = top->link;                
-                ptr->link = additionallyTop;
+                Node* ptr = top; // сохраняем вершинный элемент в ptr
+                top = top->link; // вершина теперь то, что ниже
+                ptr->link = additionallyTop; // линкуем эту вершину к вершине вспомогательного стека
                 additionallyTop = ptr;
                 break;
             }
@@ -130,7 +130,7 @@ void show_stack()
     }
     else
     {
-        Node* ptr = top;
+        Node* ptr = top; // создаем копию, чтобы не портить текущую вершину
         do
         {
           std::cout <<  ptr->data << std::endl;
