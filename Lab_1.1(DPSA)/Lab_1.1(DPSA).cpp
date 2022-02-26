@@ -1,4 +1,6 @@
 ﻿#include <iostream>
+#include <Windows.h>
+#include <thread>
 
 struct Node
 {
@@ -9,6 +11,7 @@ struct Node
 Node* top = NULL; // адрес ключевого элемента стека - вершины
 Node* additionallyTop = NULL; // адрес ключевого элемента вспомогательного стека
 char choice; // выбор пользователя
+int quantity;
 
 bool addIsempty()
 {
@@ -41,8 +44,8 @@ void push(int value)
     top = ptr; // добавляем элемент в стек, теперь он вершина  
 }
 
-void push_from_stack() {
-
+void push_from_stack() 
+{
     Node* ptr = additionallyTop; // создаем новый пойнтер, который равен вершине вспомогательного стека
     additionallyTop = additionallyTop->link; // убираем вершину из вспомогательного
     ptr->link = top; // теперь этот изъятый элемент ссылается на вершину нашего стека
@@ -53,7 +56,7 @@ void pop()
 {
     if (isempty())
     {
-        std::cout << "Stack is already empty" << std::endl;
+        std::cout << "Стек уже пуст!" << std::endl;
     }
        
     Node* ptr = top;
@@ -63,9 +66,13 @@ void pop()
 
 void pop_to_addStack()
 {
-    Node* ptr = top; // сохраняем вершинный элемент в ptr
-    top = top->link; // вершина теперь то, что ниже
-    ptr->link = additionallyTop; // линкуем эту вершину к вершине вспомогательного стека
+    if (isempty())
+    {
+        std::cout << "Стек уже пуст!" << std::endl;
+    }
+    Node* ptr = top; //сохраняем вершинный элемент в ptr
+    top = top->link; //вершина теперь то, что ниже
+    ptr->link = additionallyTop; //линкуем эту вершину к вершине вспомогательного стека
     additionallyTop = ptr;
 }
 
@@ -73,7 +80,7 @@ void show_stack()
 {
     if (isempty())
     {
-        std::cout << "Stack is empty" << std::endl;
+        std::cout << "Стек пуст" << std::endl;
     }
     else
     {
@@ -106,7 +113,7 @@ void show_addStack()
 int main()
 {
     setlocale(LC_ALL, "rus");    
-
+    srand(NULL);
     while (true)
     {
         std::cout << 
@@ -114,7 +121,7 @@ int main()
         "2-добавить элемент из вспомогательного стека\n"
         "3-удалить элемент стека\n"
         "4-удалить элемент стека и добавить его во вспомогательный стек\n"
-        "q - выход из цикла\n";
+        "q-выход из цикла\n";
 
         while ((!(std::cin >> choice) || (std::cin.peek() != '\n')))
         {
@@ -124,18 +131,38 @@ int main()
         }
         if (choice == '1')
         {
-            push(rand()%101);
+            std::cout << "Введите количество элементов для добавления" << std::endl;
+            while ((!(std::cin >> quantity) || (std::cin.peek() != '\n')) || quantity <=0)
+            {
+                std::cin.clear();
+                while (std::cin.get() != '\n');
+                std::cout << "ошибка!" << std::endl;
+            }
+            for (size_t i = 0; i < quantity; i++)
+            {
+                push(rand() % 101);
+                Sleep(10);
+            }           
             
         }
         else if (choice == '2')
-        {
-            if (addIsempty())
+        {   
+            std::cout << "Введите количество элементов для добавления" << std::endl;
+            while ((!(std::cin >> quantity) || (std::cin.peek() != '\n')) || quantity <= 0)
             {
-                std::cout << "Вспомогательный стек пуст. Добавить нечего" << std::endl;                
+                std::cin.clear();
+                while (std::cin.get() != '\n');
+                std::cout << "ошибка!" << std::endl;
             }
-            else
+            for (size_t i = 0; i < quantity; i++)
             {
-                push_from_stack();                
+                if (addIsempty())
+                {
+                    std::cout << "Вспомогательный стек уже пуст!" << std::endl;
+                    break;
+                }
+                push_from_stack();
+                Sleep(10);
             }
         }
         else if (choice == '3')
@@ -159,9 +186,7 @@ int main()
         std::cout << "Вспомогательный стек:" << std::endl;
         show_addStack();
         std::cout << std::endl;
-
-    }     
-    
+    }         
     return 0;
 }
 
